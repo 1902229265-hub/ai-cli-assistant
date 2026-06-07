@@ -53,23 +53,51 @@ def main():
             save_history(messages)
             print("聊天记录已清空")
             continue
+        if question.lower() == "help":
+            print("""
+可用命令：
 
-        messages.append({
-            "role": "user",
-            "content": question
-        })
+help              显示帮助
+clear             清空聊天记录
+files             查看当前目录文件
+read 文件名        总结指定 txt 文件
+exit              退出程序
+""")
+            continue
 
-        answer = ask_ai(messages)
+        if question.lower() == "files":
+            print("\n当前目录文件：")
+            for file in os.listdir():
+                print("-", file)
+            continue
+        if question.lower().startswith("read "):
+            print("DEBUG:进入read模式")
+            file_name = question[5:].strip()
 
-        print("\nAI：")
-        print(answer)
+            if not os.path.exists(file_name):
+             print("文件不存在")
+             continue
 
-        messages.append({
-            "role": "assistant",
-            "content": answer
-        })
+            with open(file_name, "r", encoding="utf-8") as file:
+             file_content = file.read()
 
-        save_history(messages)
+            question = f"请总结下面这个文件的内容：\n\n{file_content}"
+            messages.append({
+                 "role": "user",
+                 "content": question
+            })        
+            answer = ask_ai(messages)
+
+            print("\nAI：")
+            print(answer)
+
+            messages.append({
+                 "role": "assistant",
+                 "content": answer
+            })
+
+            save_history(messages)
+            continue
 
 
 if __name__ == "__main__":

@@ -1,0 +1,3 @@
+今天我学习了 Git、GitHub、VS Code、Ollama 和 DeepSeek。
+我已经能用 Python 调用本地 AI 模型。
+下一步我要学习如何让 AI 读取文件并总结内容。
